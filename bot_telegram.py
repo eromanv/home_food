@@ -32,7 +32,10 @@ RECIPES = {
 for day, recipe_name in RECIPES.items():
     if day == today:
         message_recipe = ', '.join(recipe_name)
-
+        dinner = recipe_name.pop(0)
+        supper = recipe_name.pop()
+        print(dinner)
+        print(supper)
 
 
 @dp.message_handler(commands=['start', 'help'])
