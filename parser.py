@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml
-import re
+
 
 url = 'https://fitstars.ru/recipes'
 
@@ -32,7 +32,7 @@ def get_data(url):
     soup = BeautifulSoup(src, 'lxml')
     recipe_russian_names = soup.find_all(
         'p', class_='main-card__title diet-card__title line-clamp line-clamp--2')
-    print(recipe_russian_names)
+    # print(recipe_russian_names)
     for russian_name in recipe_russian_names:
         russian_name_or = russian_name.get('title')
         recipe_russian_names_or.append(russian_name_or)
@@ -55,7 +55,6 @@ def get_data(url):
         recipes_to_work_with[recipre_urls[record]] = recipe_russian_names_or[record]
     
     print(recipes_to_work_with)
-
 
 
 get_data('https://fitstars.ru/recipes')

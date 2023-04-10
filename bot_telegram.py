@@ -5,6 +5,7 @@ from aiogram.utils import executor
 import datetime
 import parser
 from keyboards import kb_client
+from .parser import 
 
 class CustomException(Exception):
     pass
@@ -34,8 +35,12 @@ for day, recipe_name in RECIPES.items():
         message_recipe = ', '.join(recipe_name)
         dinner = recipe_name.pop(0)
         supper = recipe_name.pop()
-        print(dinner)
-        print(supper)
+#        print(dinner)
+#        print(supper)
+
+# for link, name in recipes.parser.items():
+#   if dinner == name()
+#   print (dinner, link)
 
 
 @dp.message_handler(commands=['start', 'help'])
