@@ -5,6 +5,9 @@ from aiogram.utils import executor
 import datetime
 from keyboards import kb_client
 from parser_fit import get_data
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class CustomException(Exception):
@@ -14,7 +17,8 @@ class CustomException(Exception):
 async def on_startup(_):
     print('Bot is online')
 
-TOKEN = str('5826007006:AAH6y2-wWMzvxOu80NUtvEs2JeACvedmqxE')
+TOKEN = os.getenv('TOKEN')
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
