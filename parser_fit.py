@@ -53,8 +53,9 @@ def get_data(url):
     # print(recipes_all_list)
     for record in range(len(recipe_russian_names_or)):
         recipes_to_work_with[recipre_urls[record]] = recipe_russian_names_or[record]
+    return recipes_to_work_with
     
-    print(recipes_to_work_with)
+    # print(recipes_to_work_with)
 
 
 get_data('https://fitstars.ru/recipes')

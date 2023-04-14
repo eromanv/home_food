@@ -3,9 +3,9 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import datetime
-import parser
 from keyboards import kb_client
-from .parser import 
+from parser_fit import get_data
+
 
 class CustomException(Exception):
     pass
@@ -38,9 +38,12 @@ for day, recipe_name in RECIPES.items():
 #        print(dinner)
 #        print(supper)
 
-# for link, name in recipes.parser.items():
-#   if dinner == name()
-#   print (dinner, link)
+RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
+
+
+for link, name in RECIPES_WITH_LINK.items():
+    if dinner == name:
+        print(dinner, link)
 
 
 @dp.message_handler(commands=['start', 'help'])
