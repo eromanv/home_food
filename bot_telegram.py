@@ -29,13 +29,13 @@ today = today.strftime('%A')
 
 
 RECIPES = {
-    'Monday': ['Курица терияки с рисом', 'Салат с нутом и тунцом'],
-    'Tuesday': ['Говядина по монгольски с рисом', 'Салат с нутом и тунцом'],
-    'Wednesday': ['Киноа с авокадо и семечками', 'Греческий салат с нутом'],
-    'Thursday': ['Тилапия в кляре', 'Жаркое из говядины'],
-    'Friday': ['Жаркое из говядины', 'Салат с креветками, киноа и нутом'],
-    'Saturday': ['Ролл с курицей и авокадо', 'Креветки кунг-пао с рисом'],
-    'Sunday': ['Креветки кунг-пао с рисом', 'Рис с овощами'],
+    'Monday': ['Запечённые куриные яйца в перцах', 'Ризотто с креветками', 'Салат с курицей в медово-горчичном соусе'],
+    'Tuesday': ['Сырники из рикотты', 'Салат с курицей в медово-горчичном соусе', 'Жаркое из говядины'],
+    'Wednesday': ['Тостадас с яйцом', 'Жаркое из говядины', 'Салат Цезарь'],
+    'Thursday': ['Сэндвич с тунцом и рикоттой', 'Салат Цезарь', 'Фунчоза с индейкой'],
+    'Friday': ['Брускетты с лососем и пастой из феты и авокадо', 'Фунчоза с индейкой', 'Салат с киноа, кабачками и кукурузой'],
+    'Saturday': ['Пудинг с семенами чиа и яблоками', 'Салат с киноа, кабачками и кукурузой', 'Поке с лососем'],
+    'Sunday': ['Овсянка без варки с семенами чиа', 'Поке с лососем', 'Салат с креветками, киноа и нутом'],
 }
 
 RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
@@ -44,14 +44,21 @@ RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
 for day, recipe_name in RECIPES.items():
     if day == today:
         message_recipe = ', '.join(recipe_name)
-        dinner = recipe_name.pop(0)
+        breakfast = recipe_name.pop(0)
+        dinner = recipe_name.pop(1)
         supper = recipe_name.pop()
         for link, name in RECIPES_WITH_LINK.items():
             if dinner == name:
                 message_recipe_steps = '\n'.join(get_reciept(link))
 
+            if supper == name:
+                message_recipe_steps = '\n'.join(get_reciept(link))
+            if breakfast == name:
+                message_recipe_steps = '\n'.join(get_reciept(link))
+
     if day == yesterday:
-        message_recipe_yesterday = ', '.join(recipe_name)
+        message_recipe_yesterday = ', '.join(
+            recipe_name)
         dinner = recipe_name.pop(0)
         supper = recipe_name.pop()
     if day == tommorow:
