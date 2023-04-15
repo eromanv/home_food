@@ -4,7 +4,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import datetime
 from keyboards import kb_client
-# from parser_fit import get_data
+from parser_fit import get_data, get_reciept
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,6 +48,8 @@ RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
 for link, name in RECIPES_WITH_LINK.items():
     if dinner == name:
         print(dinner, link)
+        result = get_reciept(link)
+        print(result)
 
 
 

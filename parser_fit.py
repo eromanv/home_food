@@ -5,12 +5,18 @@ import lxml
 
 url = 'https://fitstars.ru/recipes'
 
+RECIPRE_URLS = []
+RECIPE_RUSSIAN_NAMES_OR = []
+RECIPES_TO_WORK_WITH = {}
+RECIPE_STEP_BY_STEP = []
+HEADERS = {
+    'user-agent': ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537'
+}
+
 
 def get_data(url):
-    headers = {
-        'user-agent': ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537'
-    }
-    req = requests.get(url, headers)
+
+    req = requests.get(url, HEADERS)
     req.encoding = 'utf-8'
     src = req.text
 
@@ -19,11 +25,6 @@ def get_data(url):
 
     # with open('food_from_fitstars2.html', encoding='utf-8') as file:
     # src = file.read()
-
-    RECIPRE_URLS = []
-    RECIPE_RUSSIAN_NAMES_OR = []
-    RECIPES_TO_WORK_WITH = {}
-    RECIPE_STEP_BY_STEP = []
 
     soup = BeautifulSoup(src, 'lxml')
     recipies = soup.find_all('section', class_='main-card diet-card')
@@ -38,18 +39,6 @@ def get_data(url):
     for russian_name in recipe_russian_names:
         russian_name_or = russian_name.get('title')
         RECIPE_RUSSIAN_NAMES_OR.append(russian_name_or)
-
-    for link in RECIPRE_URLS[0:2]:
-        link_get = requests.get(link, headers)
-        link_get.encoding = 'utf-8'
-        link_src = link_get.text
-        soup = BeautifulSoup(link_src, 'lxml')
-        steps = soup.find_all(
-            'div', class_='recipe__item-txt')
-        print(steps)
-        for step in steps:
-            each_step = step.text
-            RECIPE_STEP_BY_STEP.append(each_step)
 
     # recipe_russian_names.append(recipe_russian_name)
 
@@ -71,4 +60,21 @@ def get_data(url):
     return RECIPES_TO_WORK_WITH
 
     # print(recipes_to_work_w
+
+
 get_data(url)
+
+
+def get_reciept(link):
+    # for link in RECIPRE_URLS:
+    link_get = requests.get(link, HEADERS)
+    link_get.encoding = 'utf-8'
+    link_src = link_get.text
+    soup = BeautifulSoup(link_src, 'lxml')
+    steps = soup.find_all(
+        'div', class_='recipe__item-txt')
+    # print(steps)
+    for step in steps:
+        each_step = step.text
+        RECIPE_STEP_BY_STEP.append(each_step)
+    return RECIPE_STEP_BY_STEP
