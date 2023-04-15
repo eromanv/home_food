@@ -5,6 +5,7 @@ import lxml
 
 url = 'https://fitstars.ru/recipes'
 
+
 def get_data(url):
     headers = {
         'user-agent': ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537'
@@ -14,20 +15,21 @@ def get_data(url):
     src = req.text
 
     # with open('food_from_fitstars2.html', 'w',  encoding='utf-8') as file:
-        # file.write(req.text)
+    # file.write(req.text)
 
     # with open('food_from_fitstars2.html', encoding='utf-8') as file:
-        # src = file.read()
+    # src = file.read()
 
-    recipre_urls = []
-    recipe_russian_names_or = []
-    recipes_to_work_with = {}
+    RECIPRE_URLS = []
+    RECIPE_RUSSIAN_NAMES_OR = []
+    RECIPES_TO_WORK_WITH = {}
+    RECIPE_STEP_BY_STEP = []
 
     soup = BeautifulSoup(src, 'lxml')
     recipies = soup.find_all('section', class_='main-card diet-card')
     for recipe in recipies:
         recipre_url = 'https://fitstars.ru' + recipe.find('a').get('href')
-        recipre_urls.append(recipre_url)
+        RECIPRE_URLS.append(recipre_url)
 
     soup = BeautifulSoup(src, 'lxml')
     recipe_russian_names = soup.find_all(
@@ -35,7 +37,19 @@ def get_data(url):
     # print(recipe_russian_names)
     for russian_name in recipe_russian_names:
         russian_name_or = russian_name.get('title')
-        recipe_russian_names_or.append(russian_name_or)
+        RECIPE_RUSSIAN_NAMES_OR.append(russian_name_or)
+
+    for link in RECIPRE_URLS[0:2]:
+        link_get = requests.get(link, headers)
+        link_get.encoding = 'utf-8'
+        link_src = link_get.text
+        soup = BeautifulSoup(link_src, 'lxml')
+        steps = soup.find_all(
+            'div', class_='recipe__item-txt')
+        print(steps)
+        for step in steps:
+            each_step = step.text
+            RECIPE_STEP_BY_STEP.append(each_step)
 
     # recipe_russian_names.append(recipe_russian_name)
 
@@ -51,11 +65,10 @@ def get_data(url):
     # )
 
     # print(recipes_all_list)
-    for record in range(len(recipe_russian_names_or)):
-        recipes_to_work_with[recipre_urls[record]] = recipe_russian_names_or[record]
-    return recipes_to_work_with
-    
-    # print(recipes_to_work_with)
+    for record in range(len(RECIPE_RUSSIAN_NAMES_OR)):
+        RECIPES_TO_WORK_WITH[RECIPRE_URLS[record]
+                             ] = RECIPE_RUSSIAN_NAMES_OR[record]
+    return RECIPES_TO_WORK_WITH
 
-
-get_data('https://fitstars.ru/recipes')
+    # print(recipes_to_work_w
+get_data(url)
