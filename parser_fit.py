@@ -9,6 +9,7 @@ RECIPRE_URLS = []
 RECIPE_RUSSIAN_NAMES_OR = []
 RECIPES_TO_WORK_WITH = {}
 RECIPE_STEP_BY_STEP = []
+ALL_INGREDIENTS = []
 HEADERS = {
     'user-agent': ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537'
 }
@@ -78,3 +79,17 @@ def get_reciept(link):
         each_step = step.text
         RECIPE_STEP_BY_STEP.append(each_step)
     return RECIPE_STEP_BY_STEP
+
+
+def get_ingredients(link):
+    link_get = requests.get(link, HEADERS)
+    link_get.encoding = 'utf-8'
+    link_src = link_get.text
+    soup = BeautifulSoup(link_src, 'lxml')
+    ingredients = soup.find_all(
+        'ul', class_='recipe__main-list')
+    for ingredient in ingredients:
+        each_ingredient = ingredient.text
+        ALL_INGREDIENTS.append(each_ingredient)
+    return ALL_INGREDIENTS
+

@@ -3,8 +3,8 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import datetime
-from keyboards import kb_client
-from parser_fit import get_data, get_reciept
+from keyboards import kb_client, inline_buttons
+from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,12 +49,20 @@ for day, recipe_name in RECIPES.items():
         supper = recipe_name.pop()
         for link, name in RECIPES_WITH_LINK.items():
             if dinner == name:
-                message_recipe_steps = '\n'.join(get_reciept(link))
-
+                message_ingredients_dinner = "----------------\n{}".format(
+                    "\n".join(get_ingredients(link)))
+                message_recipe_steps_dinner = "----------------\n{}".format(
+                    "\n".join(get_reciept(link)))
             if supper == name:
-                message_recipe_steps = '\n'.join(get_reciept(link))
+                message_ingredients_supper = "----------------\n{}".format(
+                    "\n".join(get_ingredients(link)))
+                message_recipe_steps_supper = "----------------\n{}".format(
+                    "\n".join(get_reciept(link)))
             if breakfast == name:
-                message_recipe_steps = '\n'.join(get_reciept(link))
+                message_ingredients_breakfast = "----------------\n{}".format(
+                    "\n".join(get_ingredients(link)))
+                message_recipe_steps_breakfast = "----------------\n{}".format(
+                    "\n".join(get_reciept(link)))
 
     if day == yesterday:
         message_recipe_yesterday = ', '.join(
@@ -83,7 +91,25 @@ async def command_start(message: types.Message):
 @dp.message_handler(commands=['сегодня'])
 async def today_recipe(message: types.Message):
     await bot.send_message(message.from_user.id, message_recipe)
-    await bot.send_message(message.from_user.id, message_recipe_steps)
+    await message.answer('Chhose the plate', reply_markup=inline_buttons)
+
+
+@dp.callback_query_handler(text='breakfast')
+async def today_recipe_breakfast(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_breakfast)
+    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast)
+
+
+@dp.callback_query_handler(text='dinner')
+async def today_recipe_dinner(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_dinner)
+    await bot.send_message(message.from_user.id, message_recipe_steps_dinner)
+
+
+@dp.callback_query_handler(text='supper')
+async def today_recipe_supper(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_supper)
+    await bot.send_message(message.from_user.id, message_recipe_steps_supper)
 
 
 @dp.message_handler(commands=['вчера'])
@@ -91,9 +117,45 @@ async def yesterday_recipe(message: types.Message):
     await bot.send_message(message.from_user.id, message_recipe_yesterday)
 
 
+@dp.callback_query_handler(text='breakfast')
+async def yesterday_recipe_breakfast(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_breakfast)
+    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast)
+
+
+@dp.callback_query_handler(text='dinner')
+async def yesterday_recipe_dinner(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_dinner)
+    await bot.send_message(message.from_user.id, message_recipe_steps_dinner)
+
+
+@dp.callback_query_handler(text='supper')
+async def yesterday_recipe_supper(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_supper)
+    await bot.send_message(message.from_user.id, message_recipe_steps_supper)
+
+
 @dp.message_handler(commands=['завтра'])
 async def tommorow_recipe(message: types.Message):
     await bot.send_message(message.from_user.id, message_recipe_tommorow)
+
+
+@dp.callback_query_handler(text='breakfast')
+async def tommorow_recipe_breakfast(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_breakfast)
+    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast)
+
+
+@dp.callback_query_handler(text='dinner')
+async def tommorow_recipe_dinner(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_dinner)
+    await bot.send_message(message.from_user.id, message_recipe_steps_dinner)
+
+
+@dp.callback_query_handler(text='supper')
+async def tommorow_recipe_supper(message: types.Message):
+    await bot.send_message(message.from_user.id, message_ingredients_supper)
+    await bot.send_message(message.from_user.id, message_recipe_steps_supper)
 
 # @dp.message_handler()
 # async def echo_send(message: types.Message):
