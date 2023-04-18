@@ -68,6 +68,7 @@ get_data(url)
 
 def get_reciept(link):
     # for link in RECIPRE_URLS:
+    RECIPE_STEP_BY_STEP = []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -82,6 +83,7 @@ def get_reciept(link):
 
 
 def get_ingredients(link):
+    ALL_INGREDIENTS = []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -92,4 +94,3 @@ def get_ingredients(link):
         each_ingredient = ingredient.text
         ALL_INGREDIENTS.append(each_ingredient)
     return ALL_INGREDIENTS
-
