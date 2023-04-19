@@ -9,34 +9,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-class CustomException(Exception):
-    pass
-
-class RecieptMessage:
-
-    def __init__(self, message, day):
-        self.message = message
-        self.day = day
-
-    def message_construct(self):
-        message = 
-        
-
-async def on_startup(_):
-    print('Bot is online')
-
-TOKEN = os.getenv('TOKEN')
-
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
-
-today = datetime.datetime.now()
-yesterday = (today - datetime.timedelta(days=1)).strftime('%A')
-tommorow = (today + datetime.timedelta(days=1)).strftime('%A')
-today = today.strftime('%A')
-
-
 RECIPES = {
     'Monday': ['Запечённые куриные яйца в перцах', 'Ризотто с креветками', 'Салат с курицей в медово-горчичном соусе'],
     'Tuesday': ['Сырники из рикотты', 'Салат с курицей в медово-горчичном соусе', 'Жаркое из говядины'],
@@ -48,6 +20,32 @@ RECIPES = {
 }
 
 RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
+TOKEN = os.getenv('TOKEN')
+
+bot = Bot(token=TOKEN)
+dp = Dispatcher(bot)
+
+
+class CustomException(Exception):
+    pass
+
+# class RecieptMessage:
+
+#     def __init__(self, message, day):
+#         self.message = message
+#         self.day = day
+
+#     def day_construct(self, day):
+
+
+#     def message_construct(self, day, message):
+#         if day ==
+
+
+today = datetime.datetime.now()
+yesterday = (today - datetime.timedelta(days=1)).strftime('%A')
+tommorow = (today + datetime.timedelta(days=1)).strftime('%A')
+today = today.strftime('%A')
 
 
 for day, recipe_name in RECIPES.items():
@@ -123,6 +121,9 @@ for day, recipe_name in RECIPES.items():
 #         print(dinner, link)
 #         result = get_reciept(link)
 #         print(result)
+
+async def on_startup(_):
+    print('Bot is online')
 
 
 @dp.message_handler(commands=['start', 'help'])
