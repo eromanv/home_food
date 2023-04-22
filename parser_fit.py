@@ -69,7 +69,7 @@ def get_data(url):
 
 def get_reciept(link):
     # for link in RECIPRE_URLS:
-    # RECIPE_STEP_BY_STEP = []
+    RECIPE_STEP_BY_STEP = []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -79,13 +79,15 @@ def get_reciept(link):
     # print(steps)
     for step in steps:
         each_step = step.text
-        each_step_nobreaks = each_step.replace('\n', '')
-        RECIPE_STEP_BY_STEP.append(each_step_nobreaks)
-    # RECIPE_STEP_BY_STEP_for_sql = ''.join(RECIPE_STEP_BY_STEP)
+        # each_step_nobreaks = each_step.replace('\n', '.')
+        RECIPE_STEP_BY_STEP.append(each_step)
+    RECIPE_STEP_BY_STEP_for_sql = '; '.join(RECIPE_STEP_BY_STEP)
     # print(each_step)
     # print(each_step_nobreaks)
-    # print(RECIPE_STEP_BY_STEP_for_sql)
-    return RECIPE_STEP_BY_STEP
+    # print(RECIPE_STEP_BY_STEP)
+
+   #  print(RECIPE_STEP_BY_STEP_for_sql)
+    return RECIPE_STEP_BY_STEP_for_sql
     
 
 def get_ingredients(link):
@@ -98,10 +100,16 @@ def get_ingredients(link):
         'ul', class_='recipe__main-list')
     for ingredient in ingredients:
         each_ingredient = ingredient.text
-        each_ingredient_nobreaks = each_ingredient.replace('\n', '')
-        ALL_INGREDIENTS.append(each_ingredient_nobreaks)
-    # print(type(each_ingredient_nobreaks))
-    # print(ALL_INGREDIENTS)
+        each_ingredient_nobreaks = each_ingredient.split('\n')
+        ALL_INGREDIENTS = '; '.join(each_ingredient_nobreaks)
+        # ALL_INGREDIENTS.append(each_ingredient_nobreaks)
+        # ALL_INGREDIENTS_for_sql = ALL_INGREDIENTS.split('\n')
+   #  print(each_ingredient_nobreaks)
+   #  print(ALL_INGREDIENTS_for_sql)
+   # print(type(ALL_INGREDIENTS_for_sql))
+    #print(ALL_INGREDIENTS)
+    #print(type(ALL_INGREDIENTS))
+    #return each_ingredient_nobreaks
     return ALL_INGREDIENTS
 
 get_reciept ('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')

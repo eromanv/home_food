@@ -6,6 +6,7 @@ import datetime
 from keyboards import kb_client, inline_buttons
 from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
+import sq_database
 
 load_dotenv()
 
@@ -47,13 +48,15 @@ yesterday = (today - datetime.timedelta(days=1)).strftime('%A')
 tommorow = (today + datetime.timedelta(days=1)).strftime('%A')
 today = today.strftime('%A')
 
-
 for day, recipe_name in RECIPES.items():
     if day == today:
         message_recipe = ', '.join(recipe_name)
         breakfast = recipe_name.pop(0)
         dinner = recipe_name.pop(1)
         supper = recipe_name.pop()
+
+''' 
+
         for link, name in RECIPES_WITH_LINK.items():
             if dinner == name:
                 message_ingredients_dinner = "Вот это нужно взять из ингредиентов: \n{}".format(
@@ -114,6 +117,8 @@ for day, recipe_name in RECIPES.items():
                     "\n".join(get_ingredients(link)))
                 message_recipe_steps_breakfast_t = "Вот что нужно сделать: \n{}".format(
                     "\n".join(get_reciept(link)))
+''' 
+
 
 
 # for link, name in RECIPES_WITH_LINK.items():
