@@ -55,20 +55,21 @@ def get_data(url):
     # )
 
     # print(recipes_all_list)
-    for record in range(len(RECIPE_RUSSIAN_NAMES_OR)):
-        RECIPES_TO_WORK_WITH[RECIPRE_URLS[record]
-                             ] = RECIPE_RUSSIAN_NAMES_OR[record]
-    return RECIPES_TO_WORK_WITH
+
+    tuple_list = [(x, y) for x, y in zip(RECIPRE_URLS, RECIPE_RUSSIAN_NAMES_OR)]
+    return tuple_list
+
+    # for record in range(len(RECIPE_RUSSIAN_NAMES_OR)):
+    #     RECIPES_TO_WORK_WITH[RECIPRE_URLS[record]
+    #                          ] = RECIPE_RUSSIAN_NAMES_OR[record]
+    # return RECIPES_TO_WORK_WITH
 
     # print(recipes_to_work_w
 
 
-get_data(url)
-
-
 def get_reciept(link):
     # for link in RECIPRE_URLS:
-    RECIPE_STEP_BY_STEP = []
+    # RECIPE_STEP_BY_STEP = []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -78,12 +79,17 @@ def get_reciept(link):
     # print(steps)
     for step in steps:
         each_step = step.text
-        RECIPE_STEP_BY_STEP.append(each_step)
+        each_step_nobreaks = each_step.replace('\n', '')
+        RECIPE_STEP_BY_STEP.append(each_step_nobreaks)
+    # RECIPE_STEP_BY_STEP_for_sql = ''.join(RECIPE_STEP_BY_STEP)
+    # print(each_step)
+    # print(each_step_nobreaks)
+    # print(RECIPE_STEP_BY_STEP_for_sql)
     return RECIPE_STEP_BY_STEP
-
+    
 
 def get_ingredients(link):
-    ALL_INGREDIENTS = []
+    # ALL_INGREDIENTS = []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -92,5 +98,10 @@ def get_ingredients(link):
         'ul', class_='recipe__main-list')
     for ingredient in ingredients:
         each_ingredient = ingredient.text
-        ALL_INGREDIENTS.append(each_ingredient)
+        each_ingredient_nobreaks = each_ingredient.replace('\n', '')
+        ALL_INGREDIENTS.append(each_ingredient_nobreaks)
+    # print(type(each_ingredient_nobreaks))
+    # print(ALL_INGREDIENTS)
     return ALL_INGREDIENTS
+
+get_reciept ('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
