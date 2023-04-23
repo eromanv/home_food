@@ -3,10 +3,10 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import datetime
-from keyboards import kb_client, inline_buttons
-from parser_fit import get_data, get_reciept, get_ingredients
+from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
+# from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
-import sq_database
+from sq_database import read_base
 
 load_dotenv()
 
@@ -20,7 +20,17 @@ RECIPES = {
     'Sunday': ['Овсянка без варки с семенами чиа', 'Поке с лососем', 'Салат с креветками, киноа и нутом'],
 }
 
-RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
+RECIPES_2 = {
+    'Monday': ['Запечённый батат с яйцом', 'Салат с креветками, киноа и нутом', 'Говядина по тайски с овощами и рисом'],
+    'Tuesday': ['Шакшука', 'Говядина по тайски с овощами и рисом', 'Салат Цукини с креветками'],
+    'Wednesday': ['Тостадас с яйцом', 'Салат Цукини с креветками', 'Моё Жаркое из говядины'],
+    'Thursday': ['Сэндвич с тунцом и рикоттой', 'Моё Жаркое из говядины', 'Греческий салат с нутом'],
+    'Friday': ['Брускетты с лососем и пастой из феты и авокадо', 'Греческий салат с нутом', 'Салат с киноа, кабачками и кукурузой'],
+    'Saturday': ['Пудинг с семенами чиа и яблоками', 'Салат с киноа, кабачками и кукурузой', 'Поке с лососем'],
+    'Sunday': ['Овсянка без варки с семенами чиа', 'Поке с лососем', 'Салат с креветками, киноа и нутом'],
+}
+
+# RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
 TOKEN = os.getenv('TOKEN')
 
 bot = Bot(token=TOKEN)
@@ -44,16 +54,57 @@ class CustomException(Exception):
 
 
 today = datetime.datetime.now()
+week_number = int(today.strftime('%U'))
 yesterday = (today - datetime.timedelta(days=1)).strftime('%A')
 tommorow = (today + datetime.timedelta(days=1)).strftime('%A')
 today = today.strftime('%A')
 
-for day, recipe_name in RECIPES.items():
-    if day == today:
-        message_recipe = ', '.join(recipe_name)
-        breakfast = recipe_name.pop(0)
-        dinner = recipe_name.pop(1)
-        supper = recipe_name.pop()
+
+# def prepare_message():
+
+
+#     return message_breakfast, message_dinner, message_supper
+
+if week_number % 2 == 0:
+    for day, recipe_name in RECIPES.items():
+        if day == today:
+            message_recipe = ', '.join(recipe_name)
+            message_breakfast = read_base(recipe_name.pop(0))
+            message_supper = read_base(recipe_name.pop(1))
+            message_dinner = read_base(recipe_name.pop())
+        if day == yesterday:
+            message_recipe_yesterday = ', '.join(
+                recipe_name)
+            message_breakfast_y = read_base(recipe_name.pop(0))
+            message_supper_y = read_base(recipe_name.pop(1))
+            message_dinner_y = read_base(recipe_name.pop())
+        if day == tommorow:
+            message_recipe_tommorow = ', '.join(recipe_name)
+            message_breakfast_t = read_base(recipe_name.pop(0))
+            message_supper_t = read_base(recipe_name.pop(1))
+            message_dinner_t = read_base(recipe_name.pop())
+else:
+    for day, recipe_name in RECIPES_2.items():
+        if day == today:
+            message_recipe = ', '.join(recipe_name)
+            message_breakfast = read_base(recipe_name.pop(0))
+            message_supper = read_base(recipe_name.pop(1))
+            message_dinner = read_base(recipe_name.pop())
+        if day == yesterday:
+            message_recipe_yesterday = ', '.join(
+                recipe_name)
+            message_breakfast_y = read_base(recipe_name.pop(0))
+            message_supper_y = read_base(recipe_name.pop(1))
+            message_dinner_y = read_base(recipe_name.pop())
+        if day == tommorow:
+            message_recipe_tommorow = ', '.join(recipe_name)
+            message_breakfast_t = read_base(recipe_name.pop(0))
+            message_supper_t = read_base(recipe_name.pop(1))
+            message_dinner_t = read_base(recipe_name.pop())
+       #
+        # breakfast = recipe_name.pop(0)
+        # dinner = recipe_name.pop(1)
+        # supper = recipe_name.pop()
 
 ''' 
 
@@ -117,8 +168,7 @@ for day, recipe_name in RECIPES.items():
                     "\n".join(get_ingredients(link)))
                 message_recipe_steps_breakfast_t = "Вот что нужно сделать: \n{}".format(
                     "\n".join(get_reciept(link)))
-''' 
-
+'''
 
 
 # for link, name in RECIPES_WITH_LINK.items():
@@ -145,66 +195,60 @@ async def today_recipe(message: types.Message):
 
 @dp.callback_query_handler(text='breakfast_t')
 async def today_recipe_breakfast(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_breakfast)
-    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast)
+    await bot.send_message(message.from_user.id, message_breakfast)
 
 
 @dp.callback_query_handler(text='dinner_t')
 async def today_recipe_dinner(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_dinner)
-    await bot.send_message(message.from_user.id, message_recipe_steps_dinner)
+    await bot.send_message(message.from_user.id, message_dinner)
 
 
 @dp.callback_query_handler(text='supper_t')
 async def today_recipe_supper(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_supper)
-    await bot.send_message(message.from_user.id, message_recipe_steps_supper)
+    await bot.send_message(message.from_user.id, message_supper)
 
 
 @dp.message_handler(commands=['вчера'])
 async def yesterday_recipe(message: types.Message):
     await bot.send_message(message.from_user.id, message_recipe_yesterday)
+    await message.answer('Chose the plate', reply_markup=inline_buttons_y)
 
 
 @dp.callback_query_handler(text='breakfast_y')
 async def yesterday_recipe_breakfast(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_breakfast_y)
-    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast_y)
+    await bot.send_message(message.from_user.id, message_breakfast_y)
 
 
 @dp.callback_query_handler(text='dinner_y')
 async def yesterday_recipe_dinner(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_dinner_y)
-    await bot.send_message(message.from_user.id, message_recipe_steps_dinner_y)
+    await bot.send_message(message.from_user.id, message_dinner_y)
 
 
 @dp.callback_query_handler(text='supper_y')
 async def yesterday_recipe_supper(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_supper_y)
-    await bot.send_message(message.from_user.id, message_recipe_steps_supper_y)
+    await bot.send_message(message.from_user.id, message_supper_y)
 
 
 @dp.message_handler(commands=['завтра'])
 async def tommorow_recipe(message: types.Message):
     await bot.send_message(message.from_user.id, message_recipe_tommorow)
+    await message.answer('Chose the plate', reply_markup=inline_buttons_to)
 
 
 @dp.callback_query_handler(text='breakfast_to')
 async def tommorow_recipe_breakfast(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_breakfast_t)
-    await bot.send_message(message.from_user.id, message_recipe_steps_breakfast_t)
+    await bot.send_message(message.from_user.id, message_breakfast_t)
 
 
 @dp.callback_query_handler(text='dinner_to')
 async def tommorow_recipe_dinner(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_dinner_t)
-    await bot.send_message(message.from_user.id, message_recipe_steps_dinner_t)
+    await bot.send_message(message.from_user.id, message_dinner_t)
 
 
 @dp.callback_query_handler(text='supper_to')
 async def tommorow_recipe_supper(message: types.Message):
-    await bot.send_message(message.from_user.id, message_ingredients_supper_t)
-    await bot.send_message(message.from_user.id, message_recipe_steps_supper_t)
+    await bot.send_message(message.from_user.id, message_supper_t)
+
 
 # @dp.message_handler()
 # async def echo_send(message: types.Message):
