@@ -4,7 +4,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import datetime
 from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
-# from parser_fit import get_data, get_reciept, get_ingredients
+from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
 from sq_database import read_base
 
@@ -64,6 +64,7 @@ today = today.strftime('%A')
 
 
 #     return message_breakfast, message_dinner, message_supper
+
 
 if week_number % 2 == 0:
     for day, recipe_name in RECIPES.items():
