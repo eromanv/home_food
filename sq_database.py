@@ -1,5 +1,5 @@
 import sqlite3
-from parser_fit import get_data, get_ingredients, get_reciept
+from parser_fit import get_data, get_ingredients, get_reciept, get_calories
 
 LINKS_NAMES = []
 LINKS_NAMES = get_data('https://fitstars.ru/recipes')
@@ -7,7 +7,7 @@ links = []
 names = []
 ingredients = []
 reciepts = []
-
+calories = []
 
 def sql_start():
     global base, cur
@@ -16,7 +16,7 @@ def sql_start():
     if base:
         print('Connection is ok')
     base.execute(
-        'CREATE TABLE IF NOT EXISTS mytable (links TEXT, names TEXT, reciept TEXT, ingredients TEXT)')
+        'CREATE TABLE IF NOT EXISTS mytable (links TEXT, names TEXT, reciept TEXT, ingredients TEXT, calories TEXT)')
     base.commit()
     base.close()
 
@@ -45,7 +45,9 @@ def collect_information():
         # cur.execute("INSERT INTO mytable (reciept) VALUES (?)", (reciept,))
         # ingredients.append(ingredient)
         # reciepts.append(reciept)
-        data = list(zip(links, names, ingredients, reciepts))
+        calorie = get_calories(link)
+        calories.append(calorie)
+        data = list(zip(links, names, ingredients, reciepts, calories))
     return data
 
 
@@ -55,7 +57,7 @@ def create_base(data):
     cur = base.cursor()
     for d in data:
         cur.execute(
-            "INSERT INTO mytable (links, names, ingredients, reciept) VALUES (?, ?, ?, ?)", d)
+            "INSERT INTO mytable (links, names, ingredients, reciept, calories) VALUES (?, ?, ?, ?, ?)", d)
     base.commit()
     base.close()
 
@@ -75,15 +77,19 @@ def read_base(name):
     way_to_cook = cur.execute(
         'SELECT reciept FROM mytable WHERE names = ?', (name, ))
     way_to_cook = cur.fetchall()
+    calories = cur.execute('SELECT calories FROM mytable WHERE names = ?', (name, ))
+    calories = cur.fetchall()
     # way_to_cook_out = way_to_cook.split('/n')
-    print(definition, ingredients_list, way_to_cook)
-    return definition, ingredients_list, way_to_cook
+    print(definition, calories, ingredients_list, way_to_cook)
+    return definition, calories, ingredients_list, way_to_cook
 
+sql_start()
 
-# collect_information()
-read_base('Ризотто с креветками')
+result = collect_information()
+create_base(result)
+# read_base('Ризотто с креветками')
 # #result = collect_information()
-# create_base(result)
+
 
 # print(base)
 # print(type(ingredients), type(reciepts))

@@ -112,4 +112,24 @@ def get_ingredients(link):
     #return each_ingredient_nobreaks
     return ALL_INGREDIENTS
 
-get_reciept ('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
+def get_calories(link):
+    link_get = requests.get(link, HEADERS)
+    link_get.encoding = 'utf-8'
+    link_src = link_get.text
+    soup = BeautifulSoup(link_src, 'lxml')
+    calories = soup.find_all('span', itemprop='calories')
+    proteins = soup.find_all('span', itemprop='proteinContent')
+    carbs = soup.find_all('span', itemprop='carbohydrateContent')
+    fats = soup.find_all('span', itemprop='fatContent')
+    for calorie in calories:
+        each_calorie = calorie.string
+    for carb in carbs:
+        each_carb = carb.string
+    for protein in proteins:
+        each_protein = protein.string
+    for fat in fats:
+        each_fat = fat.string
+    # print(each_calorie, each_protein, each_fat, each_carb)
+    return each_calorie, each_protein, each_fat, each_carb
+
+get_calories('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-percah')
