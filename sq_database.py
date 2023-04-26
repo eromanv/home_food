@@ -80,13 +80,13 @@ def read_base(name):
     calories = cur.execute('SELECT calories FROM mytable WHERE names = ?', (name, ))
     calories = cur.fetchall()
     # way_to_cook_out = way_to_cook.split('/n')
-    print(definition, calories, ingredients_list, way_to_cook)
+    # print(definition, calories, ingredients_list, way_to_cook)
     return definition, calories, ingredients_list, way_to_cook
 
-sql_start()
+# sql_start()
 
-result = collect_information()
-create_base(result)
+# result = collect_information()
+# create_base(result)
 # read_base('Ризотто с креветками')
 # #result = collect_information()
 

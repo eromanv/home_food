@@ -81,12 +81,12 @@ def get_reciept(link):
         each_step = step.text
         # each_step_nobreaks = each_step.replace('\n', '.')
         RECIPE_STEP_BY_STEP.append(each_step)
-    RECIPE_STEP_BY_STEP_for_sql = '; '.join(RECIPE_STEP_BY_STEP)
+    RECIPE_STEP_BY_STEP_for_sql = ' '.join(RECIPE_STEP_BY_STEP)
     # print(each_step)
     # print(each_step_nobreaks)
     # print(RECIPE_STEP_BY_STEP)
 
-   #  print(RECIPE_STEP_BY_STEP_for_sql)
+    print(RECIPE_STEP_BY_STEP_for_sql)
     return RECIPE_STEP_BY_STEP_for_sql
     
 
@@ -101,15 +101,16 @@ def get_ingredients(link):
     for ingredient in ingredients:
         each_ingredient = ingredient.text
         each_ingredient_nobreaks = each_ingredient.split('\n')
-        ALL_INGREDIENTS = '; '.join(each_ingredient_nobreaks)
+        ALL_INGREDIENTS = ' '.join(each_ingredient_nobreaks)
         # ALL_INGREDIENTS.append(each_ingredient_nobreaks)
         # ALL_INGREDIENTS_for_sql = ALL_INGREDIENTS.split('\n')
    #  print(each_ingredient_nobreaks)
    #  print(ALL_INGREDIENTS_for_sql)
    # print(type(ALL_INGREDIENTS_for_sql))
-    #print(ALL_INGREDIENTS)
+    # print(ALL_INGREDIENTS)
     #print(type(ALL_INGREDIENTS))
     #return each_ingredient_nobreaks
+    # print('ingredients are added')
     return ALL_INGREDIENTS
 
 def get_calories(link):
@@ -129,7 +130,12 @@ def get_calories(link):
         each_protein = protein.string
     for fat in fats:
         each_fat = fat.string
+    print('Калории добавлены')
+    total_energy = 'К {} БЖУ{} {} {}'.format(each_calorie, each_protein, each_fat, each_carb)
+    # print(total_energy)
+    return total_energy
     # print(each_calorie, each_protein, each_fat, each_carb)
-    return each_calorie, each_protein, each_fat, each_carb
+   # return each_calorie, each_protein, each_fat, each_carb
+    
 
-get_calories('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-percah')
+get_ingredients('https://fitstars.ru/recipes/grecheskij-salat-s-nutom')
