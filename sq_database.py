@@ -1,8 +1,8 @@
 import sqlite3
-from parser_fit import get_data, get_ingredients, get_reciept, get_calories
+# from parser_fit import get_data, get_ingredients, get_reciept, get_calories
 
 LINKS_NAMES = []
-LINKS_NAMES = get_data('https://fitstars.ru/recipes')
+# #LINKS_NAMES = get_data('https://fitstars.ru/recipes')
 links = []
 names = []
 ingredients = []
@@ -73,21 +73,27 @@ def read_base(name):
     # definition_out = ', '.join(definition)
     ingredients_list = cur.execute('SELECT ingredients FROM mytable WHERE names = ?', (name, ))
     ingredients_list = cur.fetchall()
+    ingredients_list = str(ingredients_list[0][0])
     # ingredients_list_out = ingredients_list.split('/n')
     way_to_cook = cur.execute(
         'SELECT reciept FROM mytable WHERE names = ?', (name, ))
     way_to_cook = cur.fetchall()
+    way_to_cook = str(way_to_cook[0][0])
     calories = cur.execute('SELECT calories FROM mytable WHERE names = ?', (name, ))
     calories = cur.fetchall()
+    calories_list = str(calories[0][0])
     # way_to_cook_out = way_to_cook.split('/n')
     # print(definition, calories, ingredients_list, way_to_cook)
+   # outcome = '{} /n Калорийность: {} /n Ингредиенты: {} /n Что нужно сделать? /n {}'.format(definition, calories, ingredients_list, way_to_cook)
+    outcome = f'{definition[0]}, \nКалорийность: {calories_list} \nИнгредиенты: {ingredients_list} \nЧто нужно сделать? \n {way_to_cook}'
+    print(outcome)
     return definition, calories, ingredients_list, way_to_cook
 
 # sql_start()
 
-# result = collect_information()
+# result = collect_information()# 
 # create_base(result)
-# read_base('Ризотто с креветками')
+# read_base('Брускетты с лососем и пастой из феты и авокадо')
 # #result = collect_information()
 
 

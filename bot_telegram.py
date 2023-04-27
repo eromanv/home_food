@@ -106,7 +106,7 @@ else:
         # breakfast = recipe_name.pop(0)
         # dinner = recipe_name.pop(1)
         # supper = recipe_name.pop()
-
+        
 ''' 
 
         for link, name in RECIPES_WITH_LINK.items():
