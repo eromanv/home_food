@@ -1,5 +1,6 @@
 import sqlite3
 # from parser_fit import get_data, get_ingredients, get_reciept, get_calories
+import re
 
 LINKS_NAMES = []
 # #LINKS_NAMES = get_data('https://fitstars.ru/recipes')
@@ -70,11 +71,13 @@ def read_base(name):
     definition = cur.execute('SELECT links, names FROM mytable WHERE names = ?', (name, ))
     definition = cur.fetchall()
     # definition = list(definition)
-    # definition_out = ', '.join(definition)
+    # definition_out = '\n'.join(definition)
     ingredients_list = cur.execute('SELECT ingredients FROM mytable WHERE names = ?', (name, ))
     ingredients_list = cur.fetchall()
-    ingredients_list = str(ingredients_list[0][0])
-    # ingredients_list_out = ingredients_list.split('/n')
+    ingredients_list = ingredients_list[0][0]
+    # ingredients_list_split = ingredients_list.split()
+    ingredients_ul = re.findall(r'[А-ЯЁ()][а-яё\W\d]*', ingredients_list)
+    ingredients_total = '\n'.join(ingredients_ul)
     way_to_cook = cur.execute(
         'SELECT reciept FROM mytable WHERE names = ?', (name, ))
     way_to_cook = cur.fetchall()
@@ -84,16 +87,37 @@ def read_base(name):
     calories_list = str(calories[0][0])
     # way_to_cook_out = way_to_cook.split('/n')
     # print(definition, calories, ingredients_list, way_to_cook)
-   # outcome = '{} /n Калорийность: {} /n Ингредиенты: {} /n Что нужно сделать? /n {}'.format(definition, calories, ingredients_list, way_to_cook)
-    outcome = f'{definition[0]}, \nКалорийность: {calories_list} \nИнгредиенты: {ingredients_list} \nЧто нужно сделать? \n {way_to_cook}'
-    print(outcome)
-    return definition, calories, ingredients_list, way_to_cook
+    # outcome = '{} /n Калорийность: {} /n Ингредиенты: {} /n Что нужно сделать? /n {}'.format(definition, calories, ingredients_list, way_to_cook)
+    outcome = f'{definition[0][1]} \n{definition[0][0]} \n\nКалорийность: {calories_list} \n\nИнгредиенты: {ingredients_total} \n \nЧто нужно сделать? \n {way_to_cook}'
+    # print(ingredients_list_split)
+    # print(ingredients_ul)
+    # print(ingredients_total)
+    # print(outcome)
+    # print(definition[0][1])
+    return outcome
 
+def insert_my_receipt():
+    base = sqlite3.connect('fitstars_new.db')
+    cur = base.cursor()
+    links = ['in youtube']
+    names = ['Моё Жаркое из говядины']
+    ingredients = ['500 гр. картошки, 500 гр. мяса, 500 гр. лука, кубик бульона']
+    reciept = ["В целом, мясо ужариваем, режем лучок полукольцами, кидаем в ужаренное мясо, отдельно жарим картошечку, потом в общую кастрюлю и заливаем водичкой с бульоном"]
+    calories = ['К 525 БЖУ 25 13 26']
+    zip_data = list(zip(links, names, ingredients, reciept, calories))
+    for d in zip_data:
+        cur.execute(
+            "INSERT INTO mytable (links, names, ingredients, reciept, calories) VALUES (?, ?, ?, ?, ?)", d)
+    base.commit()
+    base.close()
+
+
+# insert_my_receipt()
 # sql_start()
 
 # result = collect_information()# 
 # create_base(result)
-# read_base('Брускетты с лососем и пастой из феты и авокадо')
+read_base('Брускетты с лососем и пастой из феты и авокадо')
 # #result = collect_information()
 
 
