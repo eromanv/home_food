@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml
+import re
 
 
 url = 'https://fitstars.ru/recipes'
@@ -13,7 +14,7 @@ ALL_INGREDIENTS = []
 HEADERS = {
     'user-agent': ' Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537'
 }
-
+FOOD_TO_BUY = []
 
 def get_data(url):
 
@@ -137,5 +138,31 @@ def get_calories(link):
     # print(each_calorie, each_protein, each_fat, each_carb)
    # return each_calorie, each_protein, each_fat, each_carb
     
+def get_big_recipe(link):
+    link_get = requests.get(link, HEADERS)
+    link_get.encoding = 'utf-8'
+    link_src = link_get.text
+    soup = BeautifulSoup(link_src, 'lxml')
+    ingredients_to_buy = soup.find_all('li', itemprop="recipeIngredient")
+    for food in ingredients_to_buy:
+        food_item = food.text
+        name = re.findall(r'[А-ЯЁ()][а-яё ]*', food_item)
+        quantity = re.findall(r' /W', food_item)
+        print(name)
+        print(quantity)
+        FOOD_TO_BUY.append(food_item)
+    FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
+        # food_item_nobr = food_item.split()
+        # FOOD_TO_BUY = '/n'.join(food_item)
+    # ingredients_list_split = ingredients_list.split()
+    #for food_st in FOOD_TO_BUY_in_one:
+        # FOOD_TO_BUY_in_one_str = ', '.join(food_st)
+    # FOOD_TO_BUY_list = re.findall(r'[А-ЯЁ()][а-яё\W\d]*', FOOD_TO_BUY[0][0])
+    # ingredients_total = '\n'.join(ingredients_ul)
+    print(ingredients_to_buy)
+    print(FOOD_TO_BUY_in_one)
+    print(type(FOOD_TO_BUY_in_one))
 
-get_ingredients('https://fitstars.ru/recipes/grecheskij-salat-s-nutom')
+    
+
+get_big_recipe('https://fitstars.ru/recipes/grecheskij-salat-s-nutom')

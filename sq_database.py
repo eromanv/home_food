@@ -117,7 +117,7 @@ def insert_my_receipt():
 
 # result = collect_information()# 
 # create_base(result)
-read_base('Брускетты с лососем и пастой из феты и авокадо')
+# read_base('Брускетты с лососем и пастой из феты и авокадо')
 # #result = collect_information()
 
 
