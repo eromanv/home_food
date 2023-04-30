@@ -152,6 +152,10 @@ def get_big_recipe(link):
         quantity = re.findall(r'[\d]{1,3}-[\d]{1,3}|[\d]{1,3}/[\d]{1,3}|[\d]{1,3}', food_item)
         for number in quantity:
             each_quantity = number
+        if each_quantity == '1/2':
+            each_quantity = 0.5
+        if each_quantity == '1-2':
+            each_quantity = 1.5
         measure = re.findall(r'[\D]{1,3}$', food_item)
         if measure == ['су ']:
             each_quantity = 1
