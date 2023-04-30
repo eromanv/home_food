@@ -146,10 +146,24 @@ def get_big_recipe(link):
     ingredients_to_buy = soup.find_all('li', itemprop="recipeIngredient")
     for food in ingredients_to_buy:
         food_item = food.text
-        name = re.findall(r'[А-ЯЁ()][а-яё ]*', food_item)
-        quantity = re.findall(r' /W', food_item)
-        print(name)
-        print(quantity)
+        name = re.findall(r'[А-ЯЁ()][а-яё ]/%*|[А-ЯЁ()][а-яё ]*', food_item)
+        for item in name:
+            each_name = item
+        quantity = re.findall(r'[\d]{1,3}-[\d]{1,3}|[\d]{1,3}/[\d]{1,3}|[\d]{1,3}', food_item)
+        for number in quantity:
+            each_quantity = number
+        measure = re.findall(r'[\D]{1,3}$', food_item)
+        if measure == ['су ']:
+            each_quantity = 1
+            measure = ['шт.']
+        if measure == ['ок ']:
+            each_quantity = 1
+            measure = ['шт.']
+        for unit in measure:
+            each_measure = unit
+        print(each_name)
+        print(each_quantity)
+        print(each_measure)
         FOOD_TO_BUY.append(food_item)
     FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
         # food_item_nobr = food_item.split()
@@ -159,10 +173,10 @@ def get_big_recipe(link):
         # FOOD_TO_BUY_in_one_str = ', '.join(food_st)
     # FOOD_TO_BUY_list = re.findall(r'[А-ЯЁ()][а-яё\W\d]*', FOOD_TO_BUY[0][0])
     # ingredients_total = '\n'.join(ingredients_ul)
-    print(ingredients_to_buy)
-    print(FOOD_TO_BUY_in_one)
-    print(type(FOOD_TO_BUY_in_one))
+    #print(ingredients_to_buy)
+    # print(FOOD_TO_BUY_in_one)
+    #print(type(FOOD_TO_BUY_in_one))
 
     
 
-get_big_recipe('https://fitstars.ru/recipes/grecheskij-salat-s-nutom')
+get_big_recipe('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
