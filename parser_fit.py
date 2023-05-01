@@ -139,6 +139,7 @@ def get_calories(link):
    # return each_calorie, each_protein, each_fat, each_carb
     
 def get_big_recipe(link):
+    names, quantities, measures = [], [], []
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -156,20 +157,23 @@ def get_big_recipe(link):
             each_quantity = 0.5
         if each_quantity == '1-2':
             each_quantity = 1.5
-        measure = re.findall(r'[\D]{1,3}$', food_item)
-        if measure == ['су ']:
-            each_quantity = 1
+        each_quantity = int(each_quantity)
+        measure = re.findall(r'[\D]{1,5}$', food_item)
+        if measure == ['кусу ']:
+            each_quantity = 0.5
             measure = ['шт.']
-        if measure == ['ок ']:
-            each_quantity = 1
+        if measure == ['учок ']:
+            each_quantity = 0.5
             measure = ['шт.']
         for unit in measure:
             each_measure = unit
-        print(each_name)
-        print(each_quantity)
-        print(each_measure)
-        FOOD_TO_BUY.append(food_item)
-    FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
+        names.append(each_name)
+        quantities.append(each_quantity)
+        measures.append(each_measure)
+    # FOOD_TO_BUY.append(food_item)
+    print(names, quantities, measures)
+    return names, quantities, measures
+    # FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
         # food_item_nobr = food_item.split()
         # FOOD_TO_BUY = '/n'.join(food_item)
     # ingredients_list_split = ingredients_list.split()
