@@ -142,7 +142,7 @@ def insert_the_number_of_items():
 
 # result = collect_information()#
 # create_base(result)
-# read_base('Брускетты с лососем и пастой из феты и авокадо')
+read_base('Брускетты с лососем и пастой из феты и авокадо')
 # #result = collect_information()
 
 
