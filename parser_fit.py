@@ -171,7 +171,7 @@ def get_big_recipe(link):
         quantities.append(each_quantity)
         measures.append(each_measure)
     # FOOD_TO_BUY.append(food_item)
-    print(names, quantities, measures)
+    # print(names, quantities, measures)
     return names, quantities, measures
     # FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
         # food_item_nobr = food_item.split()

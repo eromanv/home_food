@@ -122,7 +122,7 @@ def insert_the_number_of_items():
     base = sqlite3.connect('fitstars_big_recipe.db')
     cur = base.cursor()
     base.execute(
-        'CREATE TABLE IF NOT EXISTS mytable (name TEXT, quantity TEXT, measure TEXT)')
+        'CREATE TABLE IF NOT EXISTS mytable (name TEXT, quantity INTEGER, measure TEXT)')
     for link, name in LINKS_NAMES[0:2]:
         items = get_big_recipe(link)
         transposed_list = zip(*items)
@@ -130,11 +130,27 @@ def insert_the_number_of_items():
         for row in transposed_list:
             values = tuple(row)
             cur.execute(query, values)
+    
         #     cur.execute(query, values)
         # cur.execute("SELECT name FROM mytable WHERE id = ?", (i,))
         # row = cur.fetchone()
         # current_value = row[0]
+    cur.execute("""
+    CREATE TABLE summarized_table (
+        ingredient TEXT,
+        total_quantity REAL
+    )
+    """)
     base.commit()
+    query_sum = '''
+    INSERT INTO summarized_table (ingredient, total_quantity)
+    SELECT name, SUM(quantity)
+    FROM mytable
+    GROUP BY name
+    '''
+    cur.execute(query_sum)
+    base.commit()
+    cur.close()
     base.close()
 
 # insert_my_receipt()
@@ -142,7 +158,7 @@ def insert_the_number_of_items():
 
 # result = collect_information()#
 # create_base(result)
-read_base('Брускетты с лососем и пастой из феты и авокадо')
+# read_base('Брускетты с лососем и пастой из феты и авокадо')
 # #result = collect_information()
 
 
