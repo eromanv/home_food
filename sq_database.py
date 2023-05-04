@@ -2,6 +2,26 @@ import sqlite3
 from parser_fit import get_data, get_ingredients, get_reciept, get_calories, get_big_recipe
 import re
 
+RECIPES = {
+    'Monday': ['Запечённые куриные яйца в перцах', 'Ризотто с креветками', 'Кукурузный салат'],
+    'Tuesday': ['Сырники из рикотты', 'Кукурузный салат', 'Жаркое из говядины'],
+    'Wednesday': ['Тостадас с яйцом', 'Жаркое из говядины', 'Салат Цезарь'],
+    'Thursday': ['Сэндвич с тунцом и рикоттой', 'Салат Цезарь', 'Фунчоза с индейкой'],
+    'Friday': ['Брускетты с лососем и пастой из феты и авокадо', 'Фунчоза с индейкой', 'Салат с киноа, кабачками и кукурузой'],
+    'Saturday': ['Пудинг с семенами чиа и яблоками', 'Салат с киноа, кабачками и кукурузой', 'Поке с лососем'],
+    'Sunday': ['Овсянка без варки с семенами чиа', 'Поке с лососем', 'Салат с креветками, киноа и нутом'],
+}
+
+RECIPES_2 = {
+    'Monday': ['Запечённый батат с яйцом', 'Салат с креветками, киноа и нутом', 'Говядина по тайски с овощами и рисом'],
+    'Tuesday': ['Шакшука', 'Говядина по тайски с овощами и рисом', 'Салат Цукини с креветками'],
+    'Wednesday': ['Тостадас с яйцом', 'Салат Цукини с креветками', 'Моё Жаркое из говядины'],
+    'Thursday': ['Сэндвич с тунцом и рикоттой', 'Моё Жаркое из говядины', 'Греческий салат с нутом'],
+    'Friday': ['Брускетты с лососем и пастой из феты и авокадо', 'Греческий салат с нутом', 'Салат с курицей в медово-горчичном соусе'],
+    'Saturday': ['Пудинг с семенами чиа и яблоками', 'Салат с курицей в медово-горчичном соусе', 'Салат из кабачков с кукурузой и фасолью'],
+    'Sunday': ['Овсянка без варки с семенами чиа', 'Салат из кабачков с кукурузой и фасолью', 'Ризотто с креветками'],
+}
+
 LINKS_NAMES = []
 LINKS_NAMES = get_data('https://fitstars.ru/recipes')
 links = []
@@ -117,20 +137,36 @@ def insert_my_receipt():
     base.commit()
     base.close()
 
+def test_keys():
+    LINKS = []
+    base = sqlite3.connect('fitstars_new.db')
+    cur = base.cursor()
+    for day, dishes in RECIPES.items():
+        for dish in dishes:
+            cur.execute('SELECT links FROM mytable WHERE names = ?', (dish, ))
+            link_recipe = cur.fetchall()
+            link_recipe_lst = link_recipe[0]
+            LINKS.append(link_recipe_lst)
+    base.commit()
+    cur.close()
+    base.close()
+    print(LINKS)
+    return LINKS
 
-def insert_the_number_of_items():
+
+def insert_the_number_of_items(LINKS):
     base = sqlite3.connect('fitstars_big_recipe.db')
     cur = base.cursor()
     base.execute(
         'CREATE TABLE IF NOT EXISTS mytable (name TEXT, quantity INTEGER, measure TEXT)')
-    for link, name in LINKS_NAMES[0:2]:
+    for link in LINKS:
         items = get_big_recipe(link)
         transposed_list = zip(*items)
         query = "INSERT INTO mytable (name, quantity, measure) VALUES (?, ?, ?)"
         for row in transposed_list:
             values = tuple(row)
             cur.execute(query, values)
-    
+
         #     cur.execute(query, values)
         # cur.execute("SELECT name FROM mytable WHERE id = ?", (i,))
         # row = cur.fetchone()
@@ -153,6 +189,9 @@ def insert_the_number_of_items():
     cur.close()
     base.close()
 
+
+
+
 # insert_my_receipt()
 # sql_start()
 
@@ -164,4 +203,6 @@ def insert_the_number_of_items():
 
 # print(base)
 # print(type(ingredients), type(reciepts))
-insert_the_number_of_items()
+
+LINKS = test_keys()
+insert_the_number_of_items(LINKS)

@@ -16,6 +16,7 @@ HEADERS = {
 }
 FOOD_TO_BUY = []
 
+
 def get_data(url):
 
     req = requests.get(url, HEADERS)
@@ -57,7 +58,8 @@ def get_data(url):
 
     # print(recipes_all_list)
 
-    tuple_list = [(x, y) for x, y in zip(RECIPRE_URLS, RECIPE_RUSSIAN_NAMES_OR)]
+    tuple_list = [(x, y)
+                  for x, y in zip(RECIPRE_URLS, RECIPE_RUSSIAN_NAMES_OR)]
     return tuple_list
 
     # for record in range(len(RECIPE_RUSSIAN_NAMES_OR)):
@@ -89,7 +91,7 @@ def get_reciept(link):
 
     print(RECIPE_STEP_BY_STEP_for_sql)
     return RECIPE_STEP_BY_STEP_for_sql
-    
+
 
 def get_ingredients(link):
     # ALL_INGREDIENTS = []
@@ -109,10 +111,11 @@ def get_ingredients(link):
    #  print(ALL_INGREDIENTS_for_sql)
    # print(type(ALL_INGREDIENTS_for_sql))
     # print(ALL_INGREDIENTS)
-    #print(type(ALL_INGREDIENTS))
-    #return each_ingredient_nobreaks
+    # print(type(ALL_INGREDIENTS))
+    # return each_ingredient_nobreaks
     # print('ingredients are added')
     return ALL_INGREDIENTS
+
 
 def get_calories(link):
     link_get = requests.get(link, HEADERS)
@@ -132,14 +135,17 @@ def get_calories(link):
     for fat in fats:
         each_fat = fat.string
     print('Калории добавлены')
-    total_energy = 'К {} БЖУ{} {} {}'.format(each_calorie, each_protein, each_fat, each_carb)
+    total_energy = 'К {} БЖУ{} {} {}'.format(
+        each_calorie, each_protein, each_fat, each_carb)
     # print(total_energy)
     return total_energy
     # print(each_calorie, each_protein, each_fat, each_carb)
    # return each_calorie, each_protein, each_fat, each_carb
-    
+
+
 def get_big_recipe(link):
     names, quantities, measures = [], [], []
+    i = 0
     link_get = requests.get(link, HEADERS)
     link_get.encoding = 'utf-8'
     link_src = link_get.text
@@ -148,16 +154,27 @@ def get_big_recipe(link):
     for food in ingredients_to_buy:
         food_item = food.text
         name = re.findall(r'[А-ЯЁ()][а-яё ]/%*|[А-ЯЁ()][а-яё ]*', food_item)
+        print(name)
         for item in name:
             each_name = item
-        quantity = re.findall(r'[\d]{1,3}-[\d]{1,3}|[\d]{1,3}/[\d]{1,3}|[\d]{1,3}', food_item)
+        quantity = re.findall(
+            r'[\d]{1,3}-[\d]{1,3}|[\d]{1,3}/[\d]{1,3}|[\d]{1,3}', food_item)
         for number in quantity:
             each_quantity = number
         if each_quantity == '1/2':
             each_quantity = 0.5
         if each_quantity == '1-2':
             each_quantity = 1.5
+        if each_quantity == '1/4' or '1/3':
+            each_quantity = 0.25
+        if each_quantity == '5-1':
+            each_quantity = 10
+        if each_quantity == '3-4':
+            each_quantity = 3
+        if each_quantity == '2-3':
+            each_quantity = 2
         each_quantity = int(each_quantity)
+
         measure = re.findall(r'[\D]{1,5}$', food_item)
         if measure == ['кусу ']:
             each_quantity = 0.5
@@ -174,17 +191,17 @@ def get_big_recipe(link):
     # print(names, quantities, measures)
     return names, quantities, measures
     # FOOD_TO_BUY_in_one = ' '.join(FOOD_TO_BUY)
-        # food_item_nobr = food_item.split()
-        # FOOD_TO_BUY = '/n'.join(food_item)
+    # food_item_nobr = food_item.split()
+    # FOOD_TO_BUY = '/n'.join(food_item)
     # ingredients_list_split = ingredients_list.split()
-    #for food_st in FOOD_TO_BUY_in_one:
-        # FOOD_TO_BUY_in_one_str = ', '.join(food_st)
+    # for food_st in FOOD_TO_BUY_in_one:
+    # FOOD_TO_BUY_in_one_str = ', '.join(food_st)
     # FOOD_TO_BUY_list = re.findall(r'[А-ЯЁ()][а-яё\W\d]*', FOOD_TO_BUY[0][0])
     # ingredients_total = '\n'.join(ingredients_ul)
-    #print(ingredients_to_buy)
+    # print(ingredients_to_buy)
     # print(FOOD_TO_BUY_in_one)
-    #print(type(FOOD_TO_BUY_in_one))
+    # print(type(FOOD_TO_BUY_in_one))
 
-    
 
-get_big_recipe('https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
+# get_big_recipe(
+ #   'https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')

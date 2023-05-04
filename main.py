@@ -6,7 +6,7 @@ import datetime
 from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
 # from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
-from sq_database import read_base
+from sq_database import read_base, sqlite3
 
 load_dotenv()
 
@@ -36,6 +36,15 @@ TOKEN = os.getenv('TOKEN')
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
+def test_keys():
+    base = sqlite3.connect('fitstars_new.db')
+    cur = base.cursor()
+    for day, dishes in RECIPES.items():
+        name = dishes
+    link = cur.execute('SELECT links FROM mytable WHERE name = ?', (name, ))
+    
+    print(dishes)
+    return dishes
 
 class CustomException(Exception):
     pass
