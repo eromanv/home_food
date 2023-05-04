@@ -165,16 +165,18 @@ def get_big_recipe(link):
             each_quantity = 0.5
         if each_quantity == '1-2':
             each_quantity = 1.5
-        if each_quantity == '1/4' or '1/3':
+        if each_quantity == '1/4':
             each_quantity = 0.25
+        if each_quantity == '1/3':
+            each_quantity = 0.3
         if each_quantity == '5-1':
             each_quantity = 10
         if each_quantity == '3-4':
             each_quantity = 3
         if each_quantity == '2-3':
             each_quantity = 2
-        each_quantity = int(each_quantity)
-
+        # each_quantity = int(each_quantity)
+        print(each_quantity)
         measure = re.findall(r'[\D]{1,5}$', food_item)
         if measure == ['кусу ']:
             each_quantity = 0.5
@@ -203,5 +205,5 @@ def get_big_recipe(link):
     # print(type(FOOD_TO_BUY_in_one))
 
 
-# get_big_recipe(
- #   'https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
+get_big_recipe(
+    'https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')

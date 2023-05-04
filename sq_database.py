@@ -137,6 +137,7 @@ def insert_my_receipt():
     base.commit()
     base.close()
 
+
 def test_keys():
     LINKS = []
     base = sqlite3.connect('fitstars_new.db')
@@ -160,17 +161,13 @@ def insert_the_number_of_items(LINKS):
     base.execute(
         'CREATE TABLE IF NOT EXISTS mytable (name TEXT, quantity INTEGER, measure TEXT)')
     for link in LINKS:
+        link = link[0]
         items = get_big_recipe(link)
         transposed_list = zip(*items)
         query = "INSERT INTO mytable (name, quantity, measure) VALUES (?, ?, ?)"
         for row in transposed_list:
             values = tuple(row)
             cur.execute(query, values)
-
-        #     cur.execute(query, values)
-        # cur.execute("SELECT name FROM mytable WHERE id = ?", (i,))
-        # row = cur.fetchone()
-        # current_value = row[0]
     cur.execute("""
     CREATE TABLE summarized_table (
         ingredient TEXT,
@@ -188,8 +185,7 @@ def insert_the_number_of_items(LINKS):
     base.commit()
     cur.close()
     base.close()
-
-
+    print(transposed_list)
 
 
 # insert_my_receipt()
@@ -203,6 +199,5 @@ def insert_the_number_of_items(LINKS):
 
 # print(base)
 # print(type(ingredients), type(reciepts))
-
 LINKS = test_keys()
 insert_the_number_of_items(LINKS)
