@@ -171,6 +171,8 @@ def get_big_recipe(link):
             each_quantity = 0.3
         if each_quantity == '5-1':
             each_quantity = 10
+        if each_quantity == '3-5':
+            each_quantity = 
         if each_quantity == '3-4':
             each_quantity = 3
         if each_quantity == '2-3':
