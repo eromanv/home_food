@@ -207,5 +207,5 @@ def get_big_recipe(link):
     # print(type(FOOD_TO_BUY_in_one))
 
 
-get_big_recipe(
-    'https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')
+# get_big_recipe(
+#     'https://fitstars.ru/recipes/zapechyonnye-kurinye-yajca-v-tortili')

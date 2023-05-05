@@ -6,7 +6,7 @@ import datetime
 from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
 # from parser_fit import get_data, get_reciept, get_ingredients
 from dotenv import load_dotenv
-from sq_database import read_base, sqlite3
+from sq_database import read_base, sqlite3, extract_data_from_table
 
 load_dotenv()
 
@@ -180,7 +180,7 @@ else:
                     "\n".join(get_reciept(link)))
 '''
 
-
+food_menu = extract_data_from_table()
 # for link, name in RECIPES_WITH_LINK.items():
 #     if dinner == name:
 #         print(dinner, link)
@@ -196,6 +196,9 @@ async def command_start(message: types.Message):
     await bot.send_message(message.from_user.id, 'Стартуем)', reply_markup=kb_client)
     await message.delete()
 
+@dp.message_handler(commands=['продукты'])
+async def all_menu(message: types.Message):
+    await bot.send_message(message.from_user.id, food_menu)
 
 @dp.message_handler(commands=['сегодня'])
 async def today_recipe(message: types.Message):

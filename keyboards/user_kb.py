@@ -3,10 +3,11 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 today = KeyboardButton('/сегодня')
 yesterday = KeyboardButton('/вчера')
 tommorow = KeyboardButton('/завтра')
+what_to_buy = KeyboardButton('/продукты')
 
 kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
 
-kb_client.insert(today).insert(yesterday).insert(tommorow)
+kb_client.insert(today).insert(yesterday).insert(tommorow).add(what_to_buy)
 
 breakfast = InlineKeyboardButton(text='/завтрак', callback_data='breakfast_t')
 dinner = InlineKeyboardButton(text='/обед', callback_data='dinner_t')
