@@ -1,6 +1,9 @@
-import sqlite3
-from parser_fit import get_data, get_ingredients, get_reciept, get_calories, get_big_recipe
 import re
+import sqlite3
+
+import pandas as pd
+from parser_fit import (get_big_recipe, get_calories, get_data,
+                        get_ingredients, get_reciept)
 
 RECIPES = {
     'Monday': ['Запечённые куриные яйца в перцах', 'Ризотто с креветками', 'Кукурузный салат'],
@@ -187,6 +190,11 @@ def insert_the_number_of_items(LINKS):
     base.close()
     print(transposed_list)
 
+def make_excel():
+    conn = sqlite3.connect('fitstars_big_recipe.db')
+    df = pd.read_sql_query("SELECT * FROM summarized_table;", conn)
+    df.to_excel('output.xlsx', index=False)
+    conn.close()
 
 # insert_my_receipt()
 # sql_start()
@@ -199,5 +207,6 @@ def insert_the_number_of_items(LINKS):
 
 # print(base)
 # print(type(ingredients), type(reciepts))
-LINKS = test_keys()
-insert_the_number_of_items(LINKS)
+# LINKS = test_keys()
+# insert_the_number_of_items(LINKS)
+make_excel()
