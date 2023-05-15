@@ -223,7 +223,7 @@ def extract_data_from_table():
 
 # print(base)
 # print(type(ingredients), type(reciepts))
-# LINKS = test_keys()
-# insert_the_number_of_items(LINKS)
+LINKS = test_keys()
+insert_the_number_of_items(LINKS)
 # make_excel()
-extract_data_from_table()
+# extract_data_from_table()
