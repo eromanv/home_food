@@ -2,6 +2,7 @@ import os
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 import datetime
 from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
 # from parser_fit import get_data, get_reciept, get_ingredients
@@ -33,8 +34,11 @@ RECIPES_2 = {
 # RECIPES_WITH_LINK = get_data('https://fitstars.ru/recipes')
 TOKEN = os.getenv('TOKEN')
 
+storage = MemoryStorage()
 bot = Bot(token=TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=storage)
+
+
 
 def test_keys():
     base = sqlite3.connect('fitstars_new.db')
@@ -49,17 +53,7 @@ def test_keys():
 class CustomException(Exception):
     pass
 
-# class RecieptMessage:
 
-#     def __init__(self, message, day):
-#         self.message = message
-#         self.day = day
-
-#     def day_construct(self, day):
-
-
-#     def message_construct(self, day, message):
-#         if day ==
 
 
 today = datetime.datetime.now()
@@ -81,106 +75,44 @@ if week_number % 2 == 0:
         if day == today:
             message_recipe = ', '.join(recipe_name)
             message_breakfast = read_base(recipe_name.pop(0))
-            message_supper = read_base(recipe_name.pop(1))
-            message_dinner = read_base(recipe_name.pop())
+            message_supper = read_base(recipe_name.pop())
+            message_dinner = read_base(recipe_name.pop(1))
         if day == yesterday:
             message_recipe_yesterday = ', '.join(
                 recipe_name)
             message_breakfast_y = read_base(recipe_name.pop(0))
-            message_supper_y = read_base(recipe_name.pop(1))
-            message_dinner_y = read_base(recipe_name.pop())
+            message_supper_y = read_base(recipe_name.pop())
+            message_dinner_y = read_base(recipe_name.pop(1))
         if day == tommorow:
             message_recipe_tommorow = ', '.join(recipe_name)
             message_breakfast_t = read_base(recipe_name.pop(0))
-            message_supper_t = read_base(recipe_name.pop(1))
-            message_dinner_t = read_base(recipe_name.pop())
+            message_supper_t = read_base(recipe_name.pop())
+            message_dinner_t = read_base(recipe_name.pop(1))
 else:
     hello_message = 'Неделя нечетная'
     for day, recipe_name in RECIPES_2.items():
         if day == today:
             message_recipe = ', '.join(recipe_name)
             message_breakfast = read_base(recipe_name.pop(0))
-            message_supper = read_base(recipe_name.pop(1))
-            message_dinner = read_base(recipe_name.pop())
+            message_supper = read_base(recipe_name.pop())
+            message_dinner = read_base(recipe_name.pop(1))
         if day == yesterday:
             message_recipe_yesterday = ', '.join(
                 recipe_name)
             message_breakfast_y = read_base(recipe_name.pop(0))
-            message_supper_y = read_base(recipe_name.pop(1))
-            message_dinner_y = read_base(recipe_name.pop())
+            message_supper_y = read_base(recipe_name.pop())
+            message_dinner_y = read_base(recipe_name.pop(1))
         if day == tommorow:
             message_recipe_tommorow = ', '.join(recipe_name)
             message_breakfast_t = read_base(recipe_name.pop(0))
-            message_supper_t = read_base(recipe_name.pop(1))
-            message_dinner_t = read_base(recipe_name.pop())
+            message_supper_t = read_base(recipe_name.pop())
+            message_dinner_t = read_base(recipe_name.pop(1))
        #
         # breakfast = recipe_name.pop(0)
         # dinner = recipe_name.pop(1)
         # supper = recipe_name.pop()
         
-''' 
 
-        for link, name in RECIPES_WITH_LINK.items():
-            if dinner == name:
-                message_ingredients_dinner = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_dinner = "Вот что нужно сделать:\n{}".format(
-                    "\n".join(get_reciept(link)))
-            if supper == name:
-                message_ingredients_supper = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_supper = "Вот что нужно сделать:\n{}".format(
-                    "\n".join(get_reciept(link)))
-            if breakfast == name:
-                message_ingredients_breakfast = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_breakfast = "Вот что нужно сделать:\n{}".format(
-                    "\n".join(get_reciept(link)))
-
-    if day == yesterday:
-        message_recipe_yesterday = ', '.join(
-            recipe_name)
-        breakfast_y = recipe_name.pop(0)
-        dinner_y = recipe_name.pop(1)
-        supper_y = recipe_name.pop()
-        for link, name in RECIPES_WITH_LINK.items():
-            if dinner_y == name:
-                message_ingredients_dinner_y = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_dinner_y = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-            if supper_y == name:
-                message_ingredients_supper_y = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_supper_y = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-            if breakfast_y == name:
-                message_ingredients_breakfast_y = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_breakfast_y = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-    if day == tommorow:
-        message_recipe_tommorow = ', '.join(recipe_name)
-        breakfast_t = recipe_name.pop(0)
-        dinner_t = recipe_name.pop(1)
-        supper_t = recipe_name.pop()
-        for link, name in RECIPES_WITH_LINK.items():
-            if dinner_t == name:
-                message_ingredients_dinner_t = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_dinner_t = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-            if supper_t == name:
-                message_ingredients_supper_t = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_supper_t = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-            if breakfast_t == name:
-                message_ingredients_breakfast_t = "Вот это нужно взять из ингредиентов: \n{}".format(
-                    "\n".join(get_ingredients(link)))
-                message_recipe_steps_breakfast_t = "Вот что нужно сделать: \n{}".format(
-                    "\n".join(get_reciept(link)))
-'''
 
 food_menu = extract_data_from_table()
 # for link, name in RECIPES_WITH_LINK.items():
