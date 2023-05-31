@@ -3,6 +3,8 @@ from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+import admin
+
 import datetime
 from keyboards import kb_client, inline_buttons, inline_buttons_y, inline_buttons_to
 # from parser_fit import get_data, get_reciept, get_ingredients
@@ -39,7 +41,6 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=storage)
 
 
-
 def test_keys():
     base = sqlite3.connect('fitstars_new.db')
     cur = base.cursor()
@@ -63,12 +64,6 @@ tommorow = (today + datetime.timedelta(days=1)).strftime('%A')
 today = today.strftime('%A')
 
 
-# def prepare_message():
-
-
-#     return message_breakfast, message_dinner, message_supper
-
-
 if week_number % 2 == 0:
     hello_message = 'Неделя чётная'
     for day, recipe_name in RECIPES.items():
@@ -76,16 +71,16 @@ if week_number % 2 == 0:
             message_recipe = ', '.join(recipe_name)
             message_breakfast = read_base(recipe_name.pop(0))
             message_supper = read_base(recipe_name.pop())
-            message_dinner = read_base(recipe_name.pop(1))
+            # message_dinner = read_base(recipe_name.pop(1))
         if day == yesterday:
             message_recipe_yesterday = ', '.join(
                 recipe_name)
-            message_breakfast_y = read_base(recipe_name.pop(0))
+            # message_breakfast_y = read_base(recipe_name.pop(0))
             message_supper_y = read_base(recipe_name.pop())
             message_dinner_y = read_base(recipe_name.pop(1))
         if day == tommorow:
             message_recipe_tommorow = ', '.join(recipe_name)
-            message_breakfast_t = read_base(recipe_name.pop(0))
+            # message_breakfast_t = read_base(recipe_name.pop(0))
             message_supper_t = read_base(recipe_name.pop())
             message_dinner_t = read_base(recipe_name.pop(1))
 else:
@@ -99,7 +94,7 @@ else:
         if day == yesterday:
             message_recipe_yesterday = ', '.join(
                 recipe_name)
-            message_breakfast_y = read_base(recipe_name.pop(0))
+            # message_breakfast_y = read_base(recipe_name.pop(0))
             message_supper_y = read_base(recipe_name.pop())
             message_dinner_y = read_base(recipe_name.pop(1))
         if day == tommorow:
@@ -107,21 +102,6 @@ else:
             message_breakfast_t = read_base(recipe_name.pop(0))
             message_supper_t = read_base(recipe_name.pop())
             message_dinner_t = read_base(recipe_name.pop(1))
-       #
-        # breakfast = recipe_name.pop(0)
-        # dinner = recipe_name.pop(1)
-        # supper = recipe_name.pop()
-        
-
-
-food_menu = extract_data_from_table()
-# for link, name in RECIPES_WITH_LINK.items():
-#     if dinner == name:
-#         print(dinner, link)
-#         result = get_reciept(link)
-#         print(result)
-
-
 
 async def on_startup(_):
     print('Bot is online')
