@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher import FSMContext, Dispatcher
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from create_bot import bot, dp
@@ -54,7 +54,7 @@ async def load_recipe(message: types.Message, state=FSMContext):
     await state.finish()
 
 
-def register_handlers_admin(dp: D):
+def register_handlers_admin(dp: Dispatcher):
     dp.register_message_handler(cm_start, commands=['Загрузить'], state=None)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_calories, state=FSMAdmin.calories)
