@@ -43,7 +43,7 @@ def sql_start():
     base.execute(
         'CREATE TABLE IF NOT EXISTS mytable (links TEXT, names TEXT, reciept TEXT, ingredients TEXT, calories TEXT)')
     base.commit()
-    base.close()
+
 
 # my_sl = slice(1, 3)
 # check = dict(list(LINKS_NAMES.items())[my_sl])
@@ -84,7 +84,6 @@ def create_base(data):
         cur.execute(
             "INSERT INTO mytable (links, names, ingredients, reciept, calories) VALUES (?, ?, ?, ?, ?)", d)
     base.commit()
-    base.close()
 
 
 def read_base(name):
@@ -124,21 +123,23 @@ def read_base(name):
     return outcome
 
 
-def insert_my_receipt():
-    base = sqlite3.connect('fitstars_new.db')
-    cur = base.cursor()
-    links = ['in youtube']
-    names = ['Моё Жаркое из говядины']
-    ingredients = [
-        '500 гр. картошки, 500 гр. мяса, 500 гр. лука, кубик бульона']
-    reciept = ["В целом, мясо ужариваем, режем лучок полукольцами, кидаем в ужаренное мясо, отдельно жарим картошечку, потом в общую кастрюлю и заливаем водичкой с бульоном"]
-    calories = ['К 525 БЖУ 25 13 26']
-    zip_data = list(zip(links, names, ingredients, reciept, calories))
-    for d in zip_data:
-        cur.execute(
-            "INSERT INTO mytable (links, names, ingredients, reciept, calories) VALUES (?, ?, ?, ?, ?)", d)
-    base.commit()
-    base.close()
+async def insert_my_receipt(state):
+    async with state.proxy() as data:
+    # base = sqlite3.connect('fitstars_new.db')
+    # cur = base.cursor()
+    # links = ['in youtube']
+    # names = ['Моё Жаркое из говядины']
+    # ingredients = [
+    #     '500 гр. картошки, 500 гр. мяса, 500 гр. лука, кубик бульона']
+    # reciept = ["В целом, мясо ужариваем, режем лучок полукольцами, кидаем в ужаренное мясо, отдельно жарим картошечку, потом в общую кастрюлю и заливаем водичкой с бульоном"]
+    # # calories = ['К 525 БЖУ 25 13 26']
+    # zip_data = list(zip(links, names, ingredients, reciept, calories))
+    # for d in zip_data:
+    #     cur.execute(
+    #         "INSERT INTO mytable (links, names, ingredients, reciept, calories) VALUES (?, ?, ?, ?, ?)", d)
+        cur.execute('INSERT INTO mytable VALUES (?, ?, ?, ?, ?)', tuple(data.values()))
+        base.commit()
+
 
 
 def test_keys():

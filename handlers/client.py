@@ -2,8 +2,8 @@
 import datetime
 
 from aiogram import Dispatcher, types
-from create_bot import bot, dp
 
+from create_bot import bot, dp
 from keyboards import (inline_buttons, inline_buttons_to, inline_buttons_y,
                        kb_client)
 from sq_database import extract_data_from_table, read_base, sqlite3

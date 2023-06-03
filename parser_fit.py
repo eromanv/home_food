@@ -178,7 +178,7 @@ def get_big_recipe(link):
         if each_quantity == '2-3':
             each_quantity = 2
         # each_quantity = int(each_quantity)
-        print(each_quantity)
+        #print(each_quantity)
         measure = re.findall(r'[\D]{1,5}$', food_item)
         if measure == ['кусу ']:
             each_quantity = 0.5
